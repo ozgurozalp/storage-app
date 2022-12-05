@@ -186,7 +186,7 @@ async function upload() {
 	checkLimit();
 	for (let i = 0; i < files.value.length; i++) {
 		const { file } = files.value[i];
-		uploadFile(auth.isAuthenticated ? auth.user.email.split('@')[0] : 'root', file.name, file, {
+		uploadFile(auth.isAuthenticated ? auth.user?.email.split('@')[0] : 'root', file.name, file, {
 			isPublic: true,
 			createBucket: true,
 			tags: auth.isAuthenticated && name === 'folder' ? [params.slug] : undefined,
@@ -203,7 +203,7 @@ async function upload() {
 }
 
 async function checkLimit() {
-	const { errors, data } = await altogic.storage.bucket(auth.user.email.split('@')[0]).getInfo(true);
+	const { errors, data } = await altogic.storage.bucket(auth.user?.email.split('@')[0]).getInfo(true);
 	if (errors) {
 		toast.error('Something went wrong, please try again');
 		return;
