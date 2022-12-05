@@ -8,32 +8,32 @@
 				<router-link
 					active-class="bg-white text-gray-900"
 					to="/login"
-					class="text-white font-medium px-2 py-1 transition rounded"
+					class="text-white font-medium px-2 py-1 transition rounded-full"
 					>Sign in</router-link
 				>
 				<router-link
 					active-class="bg-white text-gray-900"
 					to="/register"
-					class="text-white font-medium px-2 py-1 transition rounded"
+					class="text-white font-medium px-2 py-1 transition rounded-full"
 					>Sign up</router-link
 				>
 			</div>
 			<div class="flex items-center gap-2" v-else>
 				<router-link
-					active-class="bg-white text-gray-900 rounded"
+					active-class="bg-white text-gray-900"
 					to="/profile"
-					class="text-white font-medium px-4 py-2 transition hover:bg-white hover:text-gray-900"
+					class="text-white font-medium px-4 py-2 rounded-full transition hover:bg-white hover:text-gray-900"
 					>My Profile</router-link
 				>
 				<router-link
-					active-class="bg-white text-gray-900 rounded"
+					active-class="bg-white text-gray-900"
 					to="/dashboard"
-					class="text-white font-medium px-4 py-2 transition rounded hover:bg-white hover:text-gray-900"
+					class="text-white font-medium px-4 py-2 rounded-full transition rounded-full hover:bg-white hover:text-gray-900"
 					>Dashboard</router-link
 				>
 				<a
 					@click.prevent="store.logout()"
-					class="text-white font-medium rounded px-4 py-2 transition hover:bg-white hover:text-gray-900 cursor-pointer"
+					class="text-white font-medium rounded-full px-4 py-2 transition hover:bg-white hover:text-gray-900 cursor-pointer"
 					>Logout</a
 				>
 			</div>
