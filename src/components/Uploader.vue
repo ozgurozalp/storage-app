@@ -136,6 +136,7 @@ watch(
 	files,
 	newValue => {
 		if (newValue.every(file => !!file.url)) {
+			if (!auth.isAuthenticated) return;
 			if (name === 'home') {
 				router.push({ name: 'dashboard' });
 			} else {
@@ -182,8 +183,6 @@ async function copy(text) {
 }
 
 async function upload() {
-	uploadedFiles.value = [];
-	checkLimit();
 	for (let i = 0; i < files.value.length; i++) {
 		const { file } = files.value[i];
 		uploadFile(auth.isAuthenticated ? auth.user?.email.split('@')[0] : 'root', file.name, file, {
@@ -201,14 +200,21 @@ async function upload() {
 		});
 	}
 }
-
+async function handle() {
+	uploadedFiles.value = [];
+	if (auth.isAuthenticated && checkLimit()) {
+		toast.error('You have reached your limit');
+	} else {
+		upload();
+	}
+}
 async function checkLimit() {
 	const { errors, data } = await altogic.storage.bucket(auth.user?.email.split('@')[0]).getInfo(true);
 	if (errors) {
 		toast.error('Something went wrong, please try again');
 		return;
 	}
-	return data.stats.objectsCount <= 100;
+	return data.stats.objectsCount > 100;
 }
 
 function removeFile(index) {
