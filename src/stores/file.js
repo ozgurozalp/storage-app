@@ -57,13 +57,33 @@ export const useFileStore = defineStore('file', () => {
 		_folders.value.push(data);
 	}
 
-	const addFiles = files => {
+	async function deleteFile(url) {
+		const { errors } = await altogic.storage.deleteFile(url);
+		if (errors) {
+			toast.error("Couldn't delete file");
+			return;
+		}
+		toast.success('File deleted');
+		_files.value = _files.value.filter(file => file.publicPath !== url);
+	}
+
+	async function deleteFolder(id) {
+		const { errors } = await altogic.db.model('folders').object(id).delete();
+		if (errors) {
+			toast.error("Couldn't delete folder");
+			return;
+		}
+		toast.success('Folder deleted');
+		_folders.value = _folders.value.filter(folder => folder._id !== id);
+	}
+
+	function addFiles(files) {
 		if (Array.isArray(files)) {
 			_files.value.unshift(...files);
 		} else {
 			_files.value.unshift(files);
 		}
-	};
+	}
 
 	const files = computed(() => _files.value);
 	const folders = computed(() => _folders.value);
@@ -74,6 +94,7 @@ export const useFileStore = defineStore('file', () => {
 	});
 
 	return {
+		deleteFile,
 		getFiles,
 		filteredFiles,
 		fileLoading,
@@ -81,6 +102,7 @@ export const useFileStore = defineStore('file', () => {
 		createFolder,
 		files,
 		folders,
+		deleteFolder,
 		addFiles,
 	};
 });

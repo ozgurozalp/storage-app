@@ -11,7 +11,6 @@ const auth = useAuthStore();
 const storage = useFileStore();
 
 onMounted(() => {
-	console.log('onMounted');
 	storage.getFiles();
 	storage.getFolders();
 });

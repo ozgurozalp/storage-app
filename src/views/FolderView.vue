@@ -1,16 +1,21 @@
-<template></template>
+<template>
+	<ListFiles :title="title" />
+</template>
 
 <script setup>
+import ListFiles from '@/components/dashboard/ListFiles.vue';
 import { useFileStore } from '@/stores/file';
-import { useRoute } from 'vue-router';
-import { watch } from 'vue';
+import { computed } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 const storage = useFileStore();
-watch(
-	() => storage.filterFiles,
-	filtered => {
-		console.log(filtered);
-	}
-);
-</script>
+const route = useRoute();
+const router = useRouter();
 
-<style scoped></style>
+const title = computed(() => {
+	const folder = storage.folders.find(folder => folder.slug === route.params.slug);
+	if (!folder) {
+		router.push({ name: 'root-folder' });
+	}
+	return `${folder?.name} Folder`;
+});
+</script>

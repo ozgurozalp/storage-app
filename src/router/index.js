@@ -22,6 +22,11 @@ const router = createRouter({
 			meta: { requiresAuth: true },
 			children: [
 				{
+					name: 'root-folder',
+					path: '',
+					component: () => import('../views/RootFolderView.vue'),
+				},
+				{
 					path: 'folder/:slug',
 					name: 'folder',
 					component: () => import('../views/FolderView.vue'),
