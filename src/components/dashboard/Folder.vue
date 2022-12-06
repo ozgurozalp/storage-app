@@ -23,7 +23,7 @@
 			<Button
 				@click="deleteFolder"
 				variant="primary"
-				class="bg-red-400 border-red-500 aspect-square w-10 h-10 !p-0"
+				class="bg-red-400 !border-red-500 aspect-square w-10 h-10 !p-0"
 			>
 				<Icon name="trash" />
 			</Button>
