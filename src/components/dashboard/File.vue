@@ -52,7 +52,7 @@ const props = defineProps({
 });
 
 const clickOutside = e => {
-	if (previewArea.value.contains(e.target)) return;
+	if (previewArea.value?.contains(e.target)) return;
 	closePreview();
 };
 
