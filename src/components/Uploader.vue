@@ -138,7 +138,7 @@ watch(
 		if (newValue.every(file => !!file.url)) {
 			if (!auth.isAuthenticated) return;
 			if (name === 'home') {
-				router.push({ name: 'dashboard' });
+				router.push({ name: 'root-folder' });
 			} else {
 				storage.addFiles(uploadedFiles.value);
 			}
