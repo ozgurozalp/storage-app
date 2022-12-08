@@ -10,12 +10,6 @@ const router = createRouter({
 			component: () => import('../views/HomeView.vue'),
 		},
 		{
-			path: '/profile',
-			name: 'profile',
-			component: () => import('../views/ProfileView.vue'),
-			meta: { requiresAuth: true },
-		},
-		{
 			path: '/dashboard',
 			name: 'dashboard',
 			component: () => import('../views/DashboardView.vue'),
@@ -37,12 +31,6 @@ const router = createRouter({
 			path: '/login',
 			name: 'login',
 			component: () => import('../views/LoginView.vue'),
-			meta: { requiresGuest: true },
-		},
-		{
-			path: '/login-with-magic-link',
-			name: 'magic-login',
-			component: () => import('../views/LoginWithMagicLinkView.vue'),
 			meta: { requiresGuest: true },
 		},
 		{

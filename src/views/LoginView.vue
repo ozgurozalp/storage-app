@@ -24,7 +24,7 @@ async function loginHandler() {
 	} else {
 		auth.setUser(user);
 		auth.setSession(session);
-		await router.push({ name: 'profile' });
+		await router.push({ name: 'root-folder' });
 	}
 }
 </script>

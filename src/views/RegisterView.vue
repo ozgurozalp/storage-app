@@ -50,7 +50,7 @@ async function registerHandler() {
 
 	auth.setSession(session);
 	auth.setUser(user);
-	await router.push({ name: 'profile' });
+	await router.push({ name: 'root-folder' });
 }
 
 async function resend() {
