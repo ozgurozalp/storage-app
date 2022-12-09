@@ -1,4 +1,4 @@
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { defineStore } from 'pinia';
 import altogic from '@/libs/altogic';
 import { useAuthStore } from '@/stores/auth';
@@ -8,19 +8,26 @@ import { useRoute } from 'vue-router';
 
 export const useFileStore = defineStore('file', () => {
 	const _files = ref(null);
-	const _folders = ref([]);
+	const _folders = ref(null);
+	const filesInfo = ref(null);
 	const fileLoading = ref(false);
 	const folderLoading = ref(false);
 	const auth = useAuthStore();
 	const toast = useToast();
 	const route = useRoute();
 
-	async function getFiles() {
+	async function getFiles({ page = 1, limit = 50, tag = null }) {
 		fileLoading.value = true;
+
+		let filter = `userId == '${auth.user._id}' `;
+		if (tag) filter += `&& IN(tags, '${tag}')`;
+
 		const { data, errors } = await altogic.storage
 			.bucket(auth.isAuthenticated ? auth.user.email.split('@')[0] : 'root')
-			.listFiles(`userId == '${auth.user._id}'`, {
-				limit: 100,
+			.listFiles(filter, {
+				returnCountInfo: true,
+				limit,
+				page: page ?? 1,
 				sort: {
 					field: 'uploadedAt',
 					direction: 'desc',
@@ -32,12 +39,16 @@ export const useFileStore = defineStore('file', () => {
 			toast.error("Couldn't get files");
 			return;
 		}
-		_files.value = data;
+		_files.value = data.data;
+		filesInfo.value = data.info;
 	}
 
 	async function getFolders() {
 		folderLoading.value = true;
-		const { data, errors } = await altogic.db.model('folders').filter(`user == '${auth.user._id}'`).get();
+		const { data, errors } = await altogic.db
+			.model('folders')
+			.filter(`user == '${auth.user._id}'`)
+			.get();
 		folderLoading.value = false;
 		if (errors) {
 			toast.error("Couldn't get folders");
@@ -102,6 +113,7 @@ export const useFileStore = defineStore('file', () => {
 		createFolder,
 		files,
 		folders,
+		filesInfo,
 		deleteFolder,
 		addFiles,
 	};

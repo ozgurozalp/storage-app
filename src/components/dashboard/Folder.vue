@@ -37,7 +37,7 @@ import FolderIcon from '@/components/ui/FolderIcon.vue';
 import Icon from '@/components/Icon.vue';
 import Button from '@/components/ui/Button.vue';
 import { useFileStore } from '@/stores/file';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 const storage = useFileStore();
 const deleting = ref(false);
 

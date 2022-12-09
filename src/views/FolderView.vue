@@ -5,17 +5,14 @@
 <script setup>
 import ListFiles from '@/components/dashboard/ListFiles.vue';
 import { useFileStore } from '@/stores/file';
-import { computed } from 'vue';
+import { computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 const storage = useFileStore();
 const route = useRoute();
 const router = useRouter();
 
 const title = computed(() => {
-	const folder = storage.folders.find(folder => folder.slug === route.params.slug);
-	if (!folder) {
-		router.push({ name: 'root-folder' });
-	}
+	const folder = storage.folders?.find(folder => folder.slug === route.params.slug);
 	return `${folder?.name} Folder`;
 });
 </script>
