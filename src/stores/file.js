@@ -6,6 +6,8 @@ import { useToast } from 'vue-toastification';
 import slugify from 'slugify';
 import { useRoute } from 'vue-router';
 
+const DEFAULT_LIMIT = 20;
+
 export const useFileStore = defineStore('file', () => {
 	const _files = ref(null);
 	const _folders = ref(null);
@@ -16,17 +18,17 @@ export const useFileStore = defineStore('file', () => {
 	const toast = useToast();
 	const route = useRoute();
 
-	async function getFiles({ page = 1, limit = 50, tag = null }) {
+	async function getFiles({ page = 1, tag = null }) {
 		fileLoading.value = true;
 
 		let filter = `userId == '${auth.user._id}' `;
 		if (tag) filter += `&& IN(tags, '${tag}')`;
 
 		const { data, errors } = await altogic.storage
-			.bucket(auth.isAuthenticated ? auth.user.email.split('@')[0] : 'root')
+			.bucket(auth.isAuthenticated ? auth.user.email : 'root')
 			.listFiles(filter, {
 				returnCountInfo: true,
-				limit,
+				limit: DEFAULT_LIMIT,
 				page: page ?? 1,
 				sort: {
 					field: 'uploadedAt',
@@ -76,6 +78,7 @@ export const useFileStore = defineStore('file', () => {
 		}
 		toast.success('File deleted');
 		_files.value = _files.value.filter(file => file.publicPath !== url);
+		calculateCount();
 	}
 
 	async function deleteFolder(id) {
@@ -94,6 +97,12 @@ export const useFileStore = defineStore('file', () => {
 		} else {
 			_files.value.unshift(files);
 		}
+		calculateCount();
+	}
+
+	function calculateCount() {
+		filesInfo.value.count = _files.value.length;
+		filesInfo.value.totalPages = Math.ceil(_files.value.length / DEFAULT_LIMIT);
 	}
 
 	const files = computed(() => _files.value);

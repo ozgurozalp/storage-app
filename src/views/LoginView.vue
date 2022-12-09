@@ -17,14 +17,18 @@ const errors = ref(null);
 async function loginHandler() {
 	loading.value = true;
 	errors.value = null;
-	const { user, session, errors: apiErrors } = await altogic.auth.signInWithEmail(email.value, password.value);
+	const {
+		user,
+		session,
+		errors: apiErrors,
+	} = await altogic.auth.signInWithEmail(email.value, password.value);
 	if (apiErrors) {
 		errors.value = apiErrors;
 		loading.value = false;
 	} else {
 		auth.setUser(user);
 		auth.setSession(session);
-		await router.push({ name: 'root-folder' });
+		await router.push({ name: 'dashboard' });
 	}
 }
 </script>
@@ -34,18 +38,35 @@ async function loginHandler() {
 		class="flex-1 grid justify-items-center md:justify-items-stretch grid-cols-1 md:grid-cols-[1fr_400px] lg:grid-cols-[1fr_500px]"
 	>
 		<div class="h-full px-4 bg-[#F8F8F8] justify-center items-center hidden md:flex">
-			<img class="max-w-[300px] lg:max-w-[400px]" draggable="false" src="/img/auth.png" alt="auth" />
+			<img
+				class="max-w-[300px] lg:max-w-[400px]"
+				draggable="false"
+				src="/img/auth.png"
+				alt="auth"
+			/>
 		</div>
 		<div class="h-full p-5 lg:p-14 flex justify-center flex-col w-full">
 			<h1>Welcome to Storage! 👋🏻</h1>
 			<h2>Please sign-in to your account</h2>
 			<form @submit.prevent="loginHandler" class="flex flex-col gap-3">
 				<div v-if="errors" class="bg-red-500 rounded text-white p-3">
-					<p class="text-base" v-for="(error, index) in errors.items" :key="index">{{ error.message }}</p>
+					<p
+						class="text-base"
+						v-for="(error, index) in errors.items"
+						:key="index"
+					>
+						{{ error.message }}
+					</p>
 				</div>
 				<div>
 					<label for="email">Email</label>
-					<input id="email" class="border-[#D8D6DE] rounded w-full" v-model="email" type="email" required />
+					<input
+						id="email"
+						class="border-[#D8D6DE] rounded w-full"
+						v-model="email"
+						type="email"
+						required
+					/>
 				</div>
 				<div>
 					<label for="password">Password</label>
@@ -60,7 +81,9 @@ async function loginHandler() {
 				<button :disabled="loading" type="submit">Login</button>
 				<div class="info text-center">
 					New on our platform?
-					<router-link :to="{ name: 'register' }">Create an account</router-link>
+					<router-link :to="{ name: 'register' }"
+						>Create an account</router-link
+					>
 				</div>
 			</form>
 		</div>

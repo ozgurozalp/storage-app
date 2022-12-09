@@ -1,7 +1,12 @@
 <template>
 	<div v-if="open" class="modal z-50 fixed inset-0 flex items-center justify-center">
-		<div class="overflow-hidden relative modal-body bg-white rounded-[20px] min-h-[200px]">
-			<Button class="!absolute w-8 h-8 !p-0 right-2 aspect-square !top-2 !rounded-full" @click="close()">
+		<div
+			class="overflow-hidden relative modal-body bg-white rounded-[20px] min-h-[200px] max-h-[95%]"
+		>
+			<Button
+				class="!absolute w-8 h-8 !p-0 right-2 aspect-square !top-2 !rounded-full"
+				@click="close()"
+			>
 				<Icon name="close" :size="10" />
 			</Button>
 			<header class="p-4 font-medium text-[20px] flex items-center" v-if="title">

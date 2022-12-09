@@ -11,12 +11,11 @@ const router = createRouter({
 		},
 		{
 			path: '/dashboard',
-			name: 'dashboard',
 			component: () => import('../views/DashboardView.vue'),
 			meta: { requiresAuth: true },
 			children: [
 				{
-					name: 'root-folder',
+					name: 'dashboard',
 					path: '',
 					component: () => import('../views/RootFolderView.vue'),
 				},

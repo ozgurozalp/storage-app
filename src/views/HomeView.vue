@@ -1,8 +1,14 @@
 <template>
 	<Navbar />
-	<div class="flex flex-col items-center justify-center gap-4 p-4">
+	<div class="flex flex-1 flex-col items-center justify-center gap-4 p-4">
+		<div class="w-[50%] md:w-[300px]">
+			<img src="/image-upload.svg" alt="Altogic Storage" />
+		</div>
 		<Uploader />
-		<div v-if="!store.isAuthenticated" class="flex items-center gap-2 p-4 rounded bg-amber-500 text-white">
+		<div
+			v-if="!store.isAuthenticated"
+			class="flex items-center gap-2 p-4 rounded bg-amber-500 text-white"
+		>
 			<Icon class="shrink-0" name="bulb" :size="25" />
 			<span
 				>You can see the history of your uploads by

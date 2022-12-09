@@ -2,7 +2,7 @@
 	<router-link
 		v-if="isRoot"
 		exact-active-class="ring ring-2 ring-offset-2 ring-primary"
-		:to="{ name: 'root-folder' }"
+		:to="{ name: 'dashboard' }"
 		class="cursor-pointer p-2 flex items-center justify-center border aspect-square flex-col gap-2"
 	>
 		<div class="flex-1 w-full h-12 overflow-hidden flex items-center justify-center">
@@ -19,7 +19,9 @@
 		<div class="flex-1 w-full h-12 overflow-hidden flex items-center justify-center">
 			<FolderIcon class="text-primary" />
 		</div>
-		<div class="absolute top-0.5 right-0.5 flex gap-1 opacity-0 transition group-hover:opacity-100">
+		<div
+			class="absolute top-0.5 right-0.5 flex gap-1 opacity-0 transition group-hover:opacity-100"
+		>
 			<Button
 				@click="deleteFolder"
 				variant="primary"
@@ -28,7 +30,11 @@
 				<Icon name="trash" />
 			</Button>
 		</div>
-		<span class="folder-name text-center text-sm font-medium mt-auto">{{ folder.name }}</span>
+		<span
+			:title="folder.name"
+			class="folder-name text-center text-sm font-medium mt-auto"
+			>{{ folder.name }}</span
+		>
 	</router-link>
 </template>
 
@@ -61,9 +67,8 @@ const deleteFolder = () => {
 
 <style scoped>
 .folder-name {
-	display: -webkit-box;
-	-webkit-line-clamp: 1;
-	-webkit-box-orient: vertical;
-	overflow: hidden;
+	white-space: nowrap;
+	max-width: 90%;
+	@apply truncate;
 }
 </style>

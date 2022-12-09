@@ -15,11 +15,15 @@ onMounted(() => {
 });
 
 async function loginWithToken() {
-	const { user, session, errors: apiErrors } = await altogic.auth.getAuthGrant(access_token);
+	const {
+		user,
+		session,
+		errors: apiErrors,
+	} = await altogic.auth.getAuthGrant(access_token);
 	if (!apiErrors) {
 		auth.setSession(session);
 		auth.setUser(user);
-		await router.push({ name: 'profile' });
+		await router.push({ name: 'dashboard' });
 	} else {
 		errors.value = apiErrors;
 	}

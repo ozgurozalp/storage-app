@@ -38,7 +38,7 @@ async function registerHandler() {
 	password.value = '';
 	name.value = '';
 
-	createBucket(user.email.split('@')[0]).catch(err => {
+	createBucket(user.email).catch(err => {
 		console.error(err);
 		toast.error('Something went wrong while creating your bucket');
 	});
@@ -50,7 +50,7 @@ async function registerHandler() {
 
 	auth.setSession(session);
 	auth.setUser(user);
-	await router.push({ name: 'root-folder' });
+	await router.push({ name: 'dashboard' });
 }
 
 async function resend() {
@@ -77,17 +77,28 @@ async function resend() {
 		class="flex-1 grid justify-items-center md:justify-items-stretch grid-cols-1 md:grid-cols-[1fr_400px] lg:grid-cols-[1fr_500px]"
 	>
 		<div class="h-full px-4 bg-[#F8F8F8] justify-center items-center hidden md:flex">
-			<img class="max-w-[300px] lg:max-w-[400px]" draggable="false" src="/img/auth.png" alt="auth" />
+			<img
+				class="max-w-[300px] lg:max-w-[400px]"
+				draggable="false"
+				src="/img/auth.png"
+				alt="auth"
+			/>
 		</div>
-		<div v-if="isNeedToVerify" class="h-full p-5 lg:p-14 flex justify-center flex-col w-full">
+		<div
+			v-if="isNeedToVerify"
+			class="h-full p-5 lg:p-14 flex justify-center flex-col w-full"
+		>
 			<h1>Verify your email ✉️</h1>
 			<p class="verify-email-text">
-				Account activation link sent to your email address: <span>{{ email }}</span> Please follow the link
-				inside to continue.
+				Account activation link sent to your email address:
+				<span>{{ email }}</span> Please follow the link inside to continue.
 			</p>
-			<router-link class="mt-5 link" :to="{ name: 'login' }">Go To Login Page</router-link>
+			<router-link class="mt-5 link" :to="{ name: 'login' }"
+				>Go To Login Page</router-link
+			>
 			<p class="info text-center mt-3" v-if="!loading">
-				Didn't receive an email? <a class="cursor-pointer" @click.prevent="resend">Resend</a>
+				Didn't receive an email?
+				<a class="cursor-pointer" @click.prevent="resend">Resend</a>
 			</p>
 		</div>
 		<div v-else class="h-full p-5 lg:p-14 flex justify-center flex-col w-full">
@@ -95,15 +106,33 @@ async function resend() {
 			<h2>Make your storage easy and safe!</h2>
 			<form @submit.prevent="registerHandler" class="flex flex-col gap-3">
 				<div v-if="errors" class="bg-red-500 rounded text-white p-3">
-					<p class="text-base" v-for="(error, index) in errors.items" :key="index">{{ error.message }}</p>
+					<p
+						class="text-base"
+						v-for="(error, index) in errors.items"
+						:key="index"
+					>
+						{{ error.message }}
+					</p>
 				</div>
 				<div>
 					<label for="name">Full Name</label>
-					<input id="name" class="border-[#D8D6DE] rounded w-full" v-model="name" type="text" required />
+					<input
+						id="name"
+						class="border-[#D8D6DE] rounded w-full"
+						v-model="name"
+						type="text"
+						required
+					/>
 				</div>
 				<div>
 					<label for="email">Email</label>
-					<input id="email" class="border-[#D8D6DE] rounded w-full" v-model="email" type="email" required />
+					<input
+						id="email"
+						class="border-[#D8D6DE] rounded w-full"
+						v-model="email"
+						type="email"
+						required
+					/>
 				</div>
 				<div>
 					<label for="password">Password</label>
