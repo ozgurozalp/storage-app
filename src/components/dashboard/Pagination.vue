@@ -63,25 +63,20 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
 import { useFileStore } from '@/stores/file';
 const storage = useFileStore();
-const router = useRouter();
-const route = useRoute();
-const page = ref(route.query?.page ? parseInt(route.query.page) : 1);
-
-watch([page, () => route.params.slug], () => {
-	router.push({ query: { page: page.value } });
-	storage.getFiles({
-		page: page.value,
-		tag: route.params.slug ?? null,
-	});
+defineProps({
+	page: {
+		type: Number,
+		required: true,
+	},
+	next: {
+		type: Function,
+		required: true,
+	},
+	prev: {
+		type: Function,
+		required: true,
+	},
 });
-function next() {
-	page.value++;
-}
-function prev() {
-	page.value--;
-}
 </script>
