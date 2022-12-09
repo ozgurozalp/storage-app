@@ -17,7 +17,7 @@
 		<div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 xl:grid-cols-8 gap-2">
 			<File v-for="file in storage.filteredFiles" :file="file" :key="file._id" />
 		</div>
-		<Pagination />
+		<Pagination :page="page" :next="next" :prev="prev" />
 	</div>
 </template>
 
@@ -26,10 +26,28 @@ import File from '@/components/dashboard/File.vue';
 import { useFileStore } from '@/stores/file';
 import Loading from '@/components/ui/Loading.vue';
 import Uploader from '@/components/Uploader.vue';
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import Pagination from '@/components/dashboard/Pagination.vue';
+import { ref, watch } from 'vue';
 const storage = useFileStore();
 const router = useRouter();
+
+const route = useRoute();
+const page = ref(route.query?.page ? parseInt(route.query.page) : 1);
+
+watch([page, () => route.params.slug], () => {
+	router.push({ query: { page: page.value } });
+	storage.getFiles({
+		page: page.value,
+		tag: route.params.slug ?? null,
+	});
+});
+function next() {
+	page.value++;
+}
+function prev() {
+	page.value--;
+}
 
 defineProps({
 	title: {
