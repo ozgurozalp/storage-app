@@ -1,8 +1,8 @@
 <template>
 	<Navbar />
 	<div class="flex flex-1 flex-col items-center justify-center gap-4 p-4">
-		<div class="w-[50%] md:w-[300px]">
-			<img src="/image-upload.svg" alt="Altogic Storage" />
+		<div class="w-[70%] md:w-[300px]">
+			<WelcomeLogo class="max-w-full h-72 lg:h-56 aspect-square" />
 		</div>
 		<Uploader />
 		<div
@@ -25,6 +25,7 @@ import Navbar from '@/components/Navbar.vue';
 import Icon from '@/components/Icon.vue';
 import { useAuthStore } from '@/stores/auth';
 import { useHead } from '@vueuse/head';
+import WelcomeLogo from '@/components/WelcomeLogo.vue';
 const store = useAuthStore();
 useHead({
 	title: 'Home Page - Image Uploader',
