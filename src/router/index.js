@@ -55,7 +55,7 @@ router.beforeEach((to, from) => {
 	}
 	if (to.meta.requiresGuest && auth.user) {
 		return {
-			name: 'profile',
+			name: 'dashboard',
 		};
 	}
 });
