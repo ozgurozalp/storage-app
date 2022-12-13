@@ -4,9 +4,6 @@
 			Dashboard
 		</div>
 		<div class="hidden lg:block">
-			<div class="px-4 pb-2 text-sm font-semibold text-[#595959] border-b-2 mb-2">
-				Drive Storage
-			</div>
 			<ul class="grid gap-2">
 				<li class="group relative">
 					<router-link
@@ -23,7 +20,7 @@
 						active-class="bg-[#BFBFBF] text-black after:bg-[#5F5F5F] after:w-[2px] after:top-0 after:bottom-0  after:absolute after:top-0 after:right-[-1px]"
 						class="text-black/40 px-4 group-hover:bg-[#BFBFBF] group-hover:text-black transition flex items-center gap-2 py-2"
 					>
-						My drive
+						Dashboard
 					</router-link>
 				</li>
 			</ul>
