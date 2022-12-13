@@ -26,7 +26,8 @@
 				variant="primary"
 				class="bg-red-400 !border-red-500 aspect-square w-10 h-10 !p-0"
 			>
-				<Icon name="trash" />
+				<Loading v-if="deleting" />
+				<Icon name="trash" v-else />
 			</Button>
 		</div>
 		<span class="file-name text-center text-sm font-medium mt-auto">{{
@@ -39,9 +40,9 @@
 			class="fixed inset-0 flex items-center justify-center bg-white/70 z-50"
 		>
 			<div class="absolute right-1 top-1">
-				<Button @click="closePreview" class="!p-0 w-10 h-10"
-					><Icon name="close"
-				/></Button>
+				<Button @click="closePreview" class="!p-0 w-10 h-10">
+					<Icon name="close" />
+				</Button>
 			</div>
 			<div
 				ref="previewArea"
@@ -64,6 +65,9 @@ import Icon from '@/components/Icon.vue';
 import { ref } from 'vue';
 import { useToast } from 'vue-toastification';
 import { useFileStore } from '@/stores/file';
+import { useRoute } from 'vue-router';
+import Loading from '@/components/ui/Loading.vue';
+import router from '@/router';
 const deleting = ref(false);
 const toast = useToast();
 const storage = useFileStore();
@@ -77,6 +81,9 @@ const props = defineProps({
 	},
 });
 
+const route = useRoute();
+const page = ref(route.query?.page ? parseInt(route.query.page) : 1);
+
 const clickOutside = e => {
 	if (previewArea.value?.contains(e.target)) return;
 	closePreview();
@@ -85,18 +92,27 @@ const clickOutside = e => {
 const openPreview = () => {
 	isOpenPreview.value = true;
 };
+
 const closePreview = () => {
 	isOpenPreview.value = false;
 };
+
 const copyURL = async () => {
 	await navigator.clipboard.writeText(props.file.publicPath);
 	toast.success('URL copied to clipboard');
 };
+
 const deleteFile = async () => {
-	if (deleting.value) return;
 	deleting.value = true;
-	storage.deleteFile(props.file.publicPath);
+	const data = await storage.deleteFile({
+		url: props.file.publicPath,
+		page: page.value,
+		tag: route.params.slug ?? null,
+	});
 	deleting.value = false;
+	if (data.length === 0) {
+		location.replace('/dashboard');
+	}
 };
 </script>
 

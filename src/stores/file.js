@@ -4,7 +4,7 @@ import altogic from '@/libs/altogic';
 import { useAuthStore } from '@/stores/auth';
 import { useToast } from 'vue-toastification';
 import slugify from 'slugify';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
 const DEFAULT_LIMIT = 24;
 
@@ -17,6 +17,7 @@ export const useFileStore = defineStore('file', () => {
 	const auth = useAuthStore();
 	const toast = useToast();
 	const route = useRoute();
+	const router = useRouter();
 
 	async function getFiles({ page = 1, tag = null }) {
 		fileLoading.value = true;
@@ -43,6 +44,7 @@ export const useFileStore = defineStore('file', () => {
 		}
 		_files.value = data.data;
 		filesInfo.value = data.info;
+		return data.data;
 	}
 
 	async function getFolders() {
@@ -70,14 +72,28 @@ export const useFileStore = defineStore('file', () => {
 		_folders.value.push(data);
 	}
 
-	async function deleteFile(url) {
-		const { errors } = await altogic.storage.deleteFile(url);
+	async function deleteFile({ url, page = 1, tag = null }) {
+		let filter = `userId == '${auth.user._id}' `;
+		if (tag) filter += `&& IN(tags, '${tag}')`;
+		const {
+			data: { response },
+			errors,
+		} = await altogic.endpoint.delete('/file', {
+			filter,
+			url,
+			limit: DEFAULT_LIMIT,
+			bucketName: auth.isAuthenticated ? auth.user.email : 'root',
+			page: page ?? 1,
+		});
+
 		if (errors) {
-			toast.error("Couldn't delete file");
-			return;
+			return toast.error('Could not delete file');
 		}
+
+		_files.value = response.data;
+		filesInfo.value = response.info;
 		toast.success('File deleted');
-		_files.value = _files.value.filter(file => file.publicPath !== url);
+		return response.data;
 	}
 
 	async function deleteFolder(id) {

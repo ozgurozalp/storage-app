@@ -37,11 +37,19 @@ const page = ref(route.query?.page ? parseInt(route.query.page) : 1);
 
 watch([page, () => route.params.slug], () => {
 	router.push({ query: { page: page.value } });
-	storage.getFiles({
+	fetchAgain();
+});
+
+async function fetchAgain() {
+	const data = await storage.getFiles({
 		page: page.value,
 		tag: route.params.slug ?? null,
 	});
-});
+	if (data.length === 0 && page.value > 1) {
+		await router.push({ query: { page: 1 } });
+	}
+}
+
 function next() {
 	page.value++;
 }
