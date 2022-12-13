@@ -12,7 +12,7 @@
 			<header class="p-4 font-medium text-[20px] flex items-center" v-if="title">
 				{{ title }}
 			</header>
-			<div class="p-6">
+			<div class="p-6 max-h-[700px] overflow-auto">
 				<slot />
 			</div>
 		</div>
