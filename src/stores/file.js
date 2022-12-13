@@ -6,7 +6,7 @@ import { useToast } from 'vue-toastification';
 import slugify from 'slugify';
 import { useRoute } from 'vue-router';
 
-const DEFAULT_LIMIT = 20;
+const DEFAULT_LIMIT = 24;
 
 export const useFileStore = defineStore('file', () => {
 	const _files = ref(null);
@@ -78,7 +78,6 @@ export const useFileStore = defineStore('file', () => {
 		}
 		toast.success('File deleted');
 		_files.value = _files.value.filter(file => file.publicPath !== url);
-		calculateCount();
 	}
 
 	async function deleteFolder(id) {
