@@ -210,8 +210,6 @@ async function upload() {
 	for (let i = 0; i < files.value.length; i++) {
 		const { file } = files.value[i];
 		uploadFile(auth.isAuthenticated ? auth.user?.email : 'root', file.name, file, {
-			isPublic: true,
-			createBucket: true,
 			tags: auth.isAuthenticated && name === 'folder' ? [params.slug] : undefined,
 			onProgress: (uploaded, total, percent) => {
 				files.value[i].progress = percent;
@@ -226,19 +224,7 @@ async function upload() {
 }
 async function handle() {
 	uploadedFiles.value = [];
-	if (auth.isAuthenticated && checkLimit()) {
-		toast.error('You have reached your limit');
-	} else {
-		upload();
-	}
-}
-async function checkLimit() {
-	const { errors, data } = await altogic.storage.bucket(auth.user?.email).getInfo(true);
-	if (errors) {
-		toast.error('Something went wrong, please try again');
-		return;
-	}
-	return data.stats.objectsCount > 100;
+  await upload();
 }
 
 function removeFile(index) {
